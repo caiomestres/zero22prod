@@ -2,5 +2,38 @@
 name = "zero2prod"
 version = "0.1.0"
 edition = "2021"
+authors = ["Caio Mestres <caiodev@gmail.com>", "Luca Palmieri <contact@lpalmieri.com"]
+
+#com a feature de workspace é possível ter múltiplas libs
+[lib]
+path = "src/lib.rs"
+
+#só pode ter uma lib no projeto, mas vários binários
+[[bin]]
+path = "src/main.rs"
+name = "zero2prod"
 
 [dependencies]
+tokio = { version = "1.43.0", features = ["rt", "rt-multi-thread", "macros"] }
+actix-web = "4.9.0"
+serde = { version = "1.0.217", features = ["derive"] }
+config = { version = "0.14", default-features = false, features = ["yaml"] }
+sqlx = { version = "0.8", default-features = false, features = [
+    #diz para o sqlx pra usar a runtime do tokio pros futures e rustls como TLSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    "runtime-tokio-rustls",
+    #me dá sqlx::query! e sqlx::query_as
+    "macros",
+    #me possibilita funcionalidades específicas do postgres
+    "postgres",
+    #suporte pra mapear SQL uuid pra crate uuid
+    "uuid",
+    #adiciona suporte de mapear SQL timestampz pra DateTime<T> no crate chrono
+    "chrono",
+    #dá as mesmas funcionalidades que o sqlx-cli
+    "migrate",
+] }
+uuid = { version = "1.12.1", features = ["v4"] }
+chrono = { version = "0.4.39", default-features = false, features = ["clock"] }
+
+[dev-dependencies]
+reqwest = "0.12.12"
